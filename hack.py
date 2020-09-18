@@ -2,6 +2,7 @@ import filecmp
 import subprocess
 import sys
 from pathlib import Path
+import argparse
 
 
 def compile_cpp(filename: str):
@@ -45,13 +46,15 @@ def challenge():
 
 
 if __name__ == '__main__':
-    try_count = 100
-    if len(sys.argv) > 1:
-        if not sys.argv[1].isdigit():
-            print('error : argument must be integer')
-            exit(0)
-        else:
-            try_count = int(sys.argv[1])
+    if len(sys.argv) < 2:
+        print("Input a trial number!")
+        exit(0)
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('try_count', help='number of trial')
+    args = parser.parse_args()
+    try_count = int(args.try_count)
+
     compile_cpp('./gen.cc')
     compile_cpp('./sol.cc')
     compile_cpp('./stupid.cc')
